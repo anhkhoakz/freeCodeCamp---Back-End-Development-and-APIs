@@ -64,6 +64,14 @@ Excerise = mongoose.model("Exercise", exerciseSchema);
 
 // Routes
 
+app.get("/api/users", async (req, res) => {
+    const users = await User.find();
+
+    // return array of objects with username and _id
+
+    res.json(users.map((user) => ({ _id: user._id, username: user.username })));
+});
+
 app.post("/api/users", async (req, res) => {
     const { username } = req.body;
 
@@ -114,7 +122,7 @@ app.post("/api/users/:_id/exercises", async (req, res) => {
             _id: user._id,
             username: user.username,
             date: newExercise.date.toDateString(),
-            duration,
+            duration: parseInt(duration),
             description,
         });
     } catch (error) {
